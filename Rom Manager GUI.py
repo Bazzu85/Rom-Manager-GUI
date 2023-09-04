@@ -14,5 +14,5 @@ log_manager.setLogging(logging.INFO)
 configuration_manager.read_configuration()
 
 main_gui.createGUI()
-#ui.run(title="Rom Manager GUI", native=True, dark=True) #, reload=False)
-ui.run(title="Rom Manager GUI", port=globals.configuration.port_number, show=False, dark=True) #, reload=False)
+#ui.run(title='Rom Manager GUI', native=True, dark=True) #, reload=False)
+ui.run(title='Rom Manager GUI', port=globals.configuration.port_number, show=False, dark=True) #, reload=False)

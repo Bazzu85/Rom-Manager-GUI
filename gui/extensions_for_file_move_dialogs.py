@@ -31,11 +31,11 @@ def edit_extensions_for_file_move_dialog():
     with ui.dialog() as globals.ui_config_extensions_for_file_move_dialog, ui.card().classes('w-full h-full'):
         with ui.scroll_area().classes('w-full h-full'):
             with ui.card().classes('no-shadow'):
-                with ui.row():
+                with ui.row().classes('items-center'):
                     ui_extension_input = ui.input(label='Extension to add',
                             placeholder='Insert the extension to add',
                             validation={'Extension not starting with .': lambda value: value.startswith('.')}
-                        )
+                        ).classes('w-64')
                     ui.button('Add', on_click=add_extension)
             with ui.card().classes('no-shadow'):
                 with ui.row().classes('items-center'):

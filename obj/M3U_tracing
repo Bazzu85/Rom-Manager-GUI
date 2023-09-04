@@ -1,0 +1,6 @@
+class M3U_tracing():
+    def __init__(self):
+        self.M3U_file_name = ''
+        self.M3U_destination_directory = ''
+        self.M3U_file_list = ''
+    

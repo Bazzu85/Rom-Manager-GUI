@@ -9,7 +9,7 @@ import gui.extensions_for_file_move_dialogs as extensions_for_file_move_dialogs
 import gui.extensions_for_M3U_dialogs as extensions_for_M3U_dialogs
 
 # custom variables
-# xxx = ""
+# xxx = ''
 
 def createConfigTab():
     globals.logger.debug(inspect.currentframe().f_code.co_name)
@@ -19,6 +19,9 @@ def createConfigTab():
             globals.ui_config_redirect_logs_to_console_switch = ui.switch('Redirect logs to console')
         with ui.row().classes('items-center'):
             globals.ui_config_port_number = ui.number(label='Port number', min=0, max= 65353, format='%.0f')
+        with ui.row().classes('w-96 items-center'):
+            globals.ui_config_log_file_input = ui.input(label='Log file location', 
+                                                        validation={'Insert something': lambda value: value != ''}).classes('w-full')
         with ui.row().classes('items-center'):
             globals.ui_config_extensions_for_file_move_label = ui.label()
             ui.button('Edit', on_click=edit_extensions_for_file_move)
@@ -27,7 +30,7 @@ def createConfigTab():
             ui.button('Edit', on_click=edit_extensions_for_M3U)
         with ui.row():
             ui.button('Reload configuration from File', on_click=reload_configuration)
-            ui.button('Save configuration', on_click=configuration_manager.write_configuration)
+            ui.button('Save configuration', on_click=save_configuration)
 
     # centralized function to apply bindings
     apply_bindings()
@@ -36,13 +39,30 @@ def createConfigTab():
 def reload_configuration():
     globals.logger.debug(inspect.currentframe().f_code.co_name)
     configuration_manager.read_configuration()
+    message = 'Configuration reloaded.'
+    globals.logger.info(message)
+    ui.notify(message)
     apply_bindings()
     set_labels()
     
+def save_configuration():
+    if globals.ui_config_log_file_input.error != None:
+        message = 'Cannot save configuration. Log file is not valid'
+        globals.logger.info(message)
+        ui.notify(message)
+        return
+    
+    configuration_manager.write_configuration()
+    message = 'Configuration saved. Reloading and applying modifications.'
+    globals.logger.info(message)
+    ui.notify(message)
+    reload_configuration()
+
 def apply_bindings():
     globals.logger.debug(inspect.currentframe().f_code.co_name)
     globals.ui_config_debug_switch.bind_value(globals.configuration, 'debug')
     globals.ui_config_redirect_logs_to_console_switch.bind_value(globals.configuration, 'redirect_logs_to_console')
+    globals.ui_config_log_file_input.bind_value(globals.configuration, 'log_file')
     globals.ui_config_port_number.bind_value(globals.configuration, 'port_number')
     
 def set_labels():
