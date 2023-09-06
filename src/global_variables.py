@@ -4,9 +4,10 @@ from nicegui import ui
 from pathlib import *
 
 # project libraries
-import src.configuration_manager as configuration_manager
+import obj.configuration as conf
 
-configuration = configuration_manager.Configuration()
+configuration = conf.return_default_configuration()
+
 configuration_file = Path.cwd().as_posix() + '/configuration/configuration.json'
 
 # using a custom name prevent enabling other library logs
@@ -18,6 +19,7 @@ logger = logging.getLogger('custom_application_logger')
 # ui elements
 ui_config_debug_switch: ui.switch
 ui_config_redirect_logs_to_console_switch: ui.switch
+ui_config_run_in_native_mode_switch: ui.switch
 ui_config_log_file_input: ui.input
 ui_config_port_number: ui.number
 ui_config_extensions_for_file_move_label: ui.label
@@ -29,6 +31,7 @@ ui_M3U_source_path_input: ui.input
 ui_M3U_use_centralized_folder_switch: ui.switch
 ui_M3U_destination_path_input: ui.input
 ui_M3U_overwrite_switch: ui.switch
+ui_M3U_preview_table: ui.table
 
 # regex string to find if a file refer to a multidisc format
 regex_multi_disc = r"(\(Disc .+?\)|\(Disk .+?\)|\(Bonus Disc\))"

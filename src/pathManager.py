@@ -4,18 +4,18 @@ import logging
 import os
 
 # project libraries
-import src.globals as globals
+import global_variables as global_variables
 
 def addLastSlashIfMissing(path):
-    globals.logger.debug(inspect.currentframe().f_code.co_name)
-    globals.logger.debug(' path: ' + path)
+    global_variables.logger.debug(inspect.currentframe().f_code.co_name)
+    global_variables.logger.debug(' path: ' + path)
     if not path.endswith('\\'):
             path += '\\'
     return path
     
 def deleteEmptyFolders(path):
-    globals.logger.debug(inspect.currentframe().f_code.co_name)
-    globals.logger.debug(' path: ' + path)
+    global_variables.logger.debug(inspect.currentframe().f_code.co_name)
+    global_variables.logger.debug(' path: ' + path)
     for root, folders, files in os.walk(path, topdown=False):
         for folder in folders:
             remove_empty_dir(os.path.realpath(os.path.join(root, folder)))

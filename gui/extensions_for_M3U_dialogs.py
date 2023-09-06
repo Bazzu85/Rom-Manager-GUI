@@ -4,7 +4,7 @@ from nicegui import ui
 from random import randint
 
 # project libraries
-import src.globals as globals
+import global_variables as global_variables
 import src.configuration_manager as configuration_manager
 
 ui_extension_input: ui.input
@@ -18,7 +18,7 @@ def edit_extensions_for_M3U_dialog():
     
     extensions_edited = False
 
-    globals.logger.debug(inspect.currentframe().f_code.co_name)
+    global_variables.logger.debug(inspect.currentframe().f_code.co_name)
     
     columns = [
         {'name': 'extension', 'label': 'Extension', 'field': 'extension', 'required': True, 'align': 'left'}
@@ -27,7 +27,7 @@ def edit_extensions_for_M3U_dialog():
     ]
 
     # 'w-full items-center'
-    with ui.dialog() as globals.ui_config_extensions_for_M3U_dialog, ui.card().classes('w-full h-full'):
+    with ui.dialog() as global_variables.ui_config_extensions_for_M3U_dialog, ui.card().classes('w-full h-full'):
         with ui.scroll_area().classes('w-full h-full'):
             with ui.card().classes('no-shadow'):
                 with ui.row().classes('items-center'):
@@ -51,11 +51,11 @@ def edit_extensions_for_M3U_dialog():
 
 def reload_extensions_table_rows():
     global ui_extension_table
-    globals.logger.debug(inspect.currentframe().f_code.co_name)
+    global_variables.logger.debug(inspect.currentframe().f_code.co_name)
     ui_extension_table.rows.clear()
     ui_extension_table.selected.clear()
     
-    for item in globals.configuration.extensions_for_M3U:
+    for item in global_variables.configuration.extensions_for_M3U:
         ui_extension_table.rows.append({
             'extension': item,
         })
@@ -64,24 +64,24 @@ def reload_extensions_table_rows():
 def add_extension():
     global ui_extension_input
     global extensions_edited
-    globals.logger.debug(inspect.currentframe().f_code.co_name)
+    global_variables.logger.debug(inspect.currentframe().f_code.co_name)
     if ui_extension_input.error != None or ui_extension_input.value == '':
         return
     else:
         already_inserted = False
-        for item in globals.configuration.extensions_for_M3U:
+        for item in global_variables.configuration.extensions_for_M3U:
             if item == ui_extension_input.value:
                 already_inserted = True
         if already_inserted:
             message = 'Extension ' + ui_extension_input.value + ' already in list. Nothing done'
             ui.notify(message)
-            globals.logger.info(message)
+            global_variables.logger.info(message)
             return
         else:
-            globals.configuration.extensions_for_M3U.append(ui_extension_input.value)
+            global_variables.configuration.extensions_for_M3U.append(ui_extension_input.value)
             configuration_manager.write_configuration()
             message = 'Added extension ' + ui_extension_input.value + ' to list'
-            globals.logger.info(message)
+            global_variables.logger.info(message)
             ui.notify(message)
             extensions_edited = True
             reload_extensions_table_rows()
@@ -89,7 +89,7 @@ def add_extension():
 def delete_extensions():
     global ui_extension_table
     global extensions_edited
-    globals.logger.debug(inspect.currentframe().f_code.co_name)
+    global_variables.logger.debug(inspect.currentframe().f_code.co_name)
     if len(ui_extension_table.selected) > 0:
         print(str(ui_extension_table.selected))
         for selected_row in ui_extension_table.selected:
@@ -98,13 +98,13 @@ def delete_extensions():
             print(selected_row['extension'])
             extension_to_remove = selected_row['extension']
             # iterate from the bottom
-            for i in range(len(globals.configuration.extensions_for_M3U) - 1, -1, -1):
-                if globals.configuration.extensions_for_M3U[i] == extension_to_remove:
-                    del globals.configuration.extensions_for_M3U[i]
+            for i in range(len(global_variables.configuration.extensions_for_M3U) - 1, -1, -1):
+                if global_variables.configuration.extensions_for_M3U[i] == extension_to_remove:
+                    del global_variables.configuration.extensions_for_M3U[i]
 
             configuration_manager.write_configuration()
             message = 'Removed extension ' + extension_to_remove + ' from list'
-            globals.logger.info(message)
+            global_variables.logger.info(message)
             ui.notify(message)
             extensions_edited = True
             
@@ -112,6 +112,6 @@ def delete_extensions():
                     
             
 def close_dialog(result):
-    globals.logger.debug(inspect.currentframe().f_code.co_name)
-    globals.ui_config_extensions_for_M3U_dialog.submit(result)
+    global_variables.logger.debug(inspect.currentframe().f_code.co_name)
+    global_variables.ui_config_extensions_for_M3U_dialog.submit(result)
     
