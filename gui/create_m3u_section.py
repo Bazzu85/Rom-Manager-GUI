@@ -5,7 +5,7 @@ from nicegui import ui
 from pathlib import Path
 
 # project libraries
-import global_variables as global_variables
+import src.global_variables as global_variables
 import src.configuration_manager as configuration_manager
 from obj.m3u_tracing import M3U_tracing
 import workers.M3U_files_worker as M3U_files_worker
@@ -37,15 +37,14 @@ def create_M3U_files_section():
             global_variables.ui_M3U_overwrite_switch = ui.switch("Overwrite existing M3U files")
         with ui.row().classes('w-full items-center'):
             ui.button('Preview', on_click=generate_preview)
-        with ui.row().classes('w-full items-center'):
-            ui.switch('show preview').bind_enabled(locals(), 'show_preview')
+        with ui.row().classes('w-full items-center').bind_visibility_from(globals(), 'show_preview'):
             columns = [
                 {'name': 'm3u_folder', 'label': 'Folder', 'field': 'm3u_folder', 'required': True, 'align': 'left', 'sortable': True},
                 {'name': 'm3u_file', 'label': 'M3U file', 'field': 'm3u_file', 'required': True, 'align': 'left', 'sortable': True},
                 {'name': 'm3u_file_list', 'label': 'Disc list', 'field': 'm3u_file_list', 'required': True, 'align': 'left', 'sortable': True}
                 ]
             rows = []
-            global_variables.ui_M3U_preview_table = ui.table(columns=columns, rows=rows).bind_visibility_from(show_preview).classes('w-full')
+            global_variables.ui_M3U_preview_table = ui.table(columns=columns, rows=rows).classes('w-full')
 
     
 def generate_preview():

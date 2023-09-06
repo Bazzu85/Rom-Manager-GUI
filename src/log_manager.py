@@ -4,7 +4,7 @@ import sys
 from pathlib import *
 
 # project libraries
-import global_variables as global_variables
+import src.global_variables as global_variables
 import src.pathManager as pathManager
 
 def setLogging(log_level):

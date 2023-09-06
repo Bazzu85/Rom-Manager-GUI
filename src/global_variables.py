@@ -5,10 +5,16 @@ from pathlib import *
 
 # project libraries
 import obj.configuration as conf
+import obj.user_data as ud
 
 configuration = conf.return_default_configuration()
 
 configuration_file = Path.cwd().as_posix() + '/configuration/configuration.json'
+
+user_data = ud.return_default_user_data()
+
+configuration_file = Path.cwd().as_posix() + '/configuration/configuration.json'
+user_data_file = Path.cwd().as_posix() + '/configuration/user_data.json'
 
 # using a custom name prevent enabling other library logs
 # for example enabling a default log, enable the watched files log of univcorn causing a log loop

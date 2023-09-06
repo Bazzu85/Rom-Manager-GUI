@@ -6,7 +6,7 @@ from nicegui import ui
 from pathlib import Path
 
 # project libraries
-import global_variables as global_variables
+import src.global_variables as global_variables
 from obj.m3u_tracing import M3U_tracing
 
 def generate_preview():

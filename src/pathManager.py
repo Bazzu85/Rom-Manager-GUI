@@ -4,7 +4,7 @@ import logging
 import os
 
 # project libraries
-import global_variables as global_variables
+import src.global_variables as global_variables
 
 def addLastSlashIfMissing(path):
     global_variables.logger.debug(inspect.currentframe().f_code.co_name)

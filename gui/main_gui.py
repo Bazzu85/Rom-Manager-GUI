@@ -4,7 +4,7 @@ import logging
 from nicegui import ui, app
 
 # project libraries
-import global_variables as global_variables
+import src.global_variables as global_variables
 import gui.config_tab as config_tab
 import gui.main_tab as main_tab
 

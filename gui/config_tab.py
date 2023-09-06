@@ -3,7 +3,7 @@ import inspect
 from nicegui import ui
 
 # project libraries
-import global_variables as global_variables
+import src.global_variables as global_variables
 import src.configuration_manager as configuration_manager
 import gui.extensions_for_file_move_dialogs as extensions_for_file_move_dialogs
 import gui.extensions_for_M3U_dialogs as extensions_for_M3U_dialogs

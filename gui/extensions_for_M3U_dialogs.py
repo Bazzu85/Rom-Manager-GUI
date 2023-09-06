@@ -4,7 +4,7 @@ from nicegui import ui
 from random import randint
 
 # project libraries
-import global_variables as global_variables
+import src.global_variables as global_variables
 import src.configuration_manager as configuration_manager
 
 ui_extension_input: ui.input

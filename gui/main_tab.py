@@ -4,8 +4,8 @@ from nicegui import ui
 from pathlib import Path
 
 # project libraries
-import global_variables as global_variables
-import gui.m3u_files_section as m3u_files_section
+import src.global_variables as global_variables
+import gui.create_m3u_section as create_m3u_section
 
 # custom variables
 # xxx = ''
@@ -17,4 +17,4 @@ def createMainTab():
     with ui.expansion(text='Move roms to folder').classes('w-full'):
         pass
     with ui.expansion(text='Create M3U files for multidisc roms').classes('w-full'):
-        m3u_files_section.create_M3U_files_section()
+        create_m3u_section.create_M3U_files_section()
