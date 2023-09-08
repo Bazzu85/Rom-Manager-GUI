@@ -11,11 +11,11 @@ from obj.m3u_tracing import M3U_tracing
 import workers.M3U_files_worker as M3U_files_worker
 
 show_preview = False
-m3u_tracing_list = []
-
+enable_preview_button = True
 
 def create_M3U_files_section():
     global show_preview
+    global enable_preview_button
     global_variables.logger.debug(inspect.currentframe().f_code.co_name)
     with ui.card().classes('w-full items-center no-shadow'):
         with ui.row().classes('w-full items-center'):
@@ -35,7 +35,8 @@ def create_M3U_files_section():
         with ui.row().classes('w-full items-center'):
             global_variables.ui_M3U_overwrite_switch = ui.switch("Overwrite existing M3U files")
         with ui.row().classes('w-full items-center'):
-            ui.button('Preview', on_click=generate_preview)
+            global_variables.ui_M3U_preview_button = ui.button('Preview', on_click=generate_preview).bind_enabled_from(globals(), 'enable_preview_button')
+            global_variables.ui_M3U_generate_button = ui.button('Generate M3U', on_click=generate_M3U).bind_visibility_from(globals(), 'show_preview')
         with ui.row().classes('w-full items-center').bind_visibility_from(globals(), 'show_preview'):
             add_table_to_ui()
             
@@ -61,7 +62,7 @@ def add_table_to_ui():
 def add_rows_to_table():
     global_variables.logger.debug(inspect.currentframe().f_code.co_name)
 
-    for item in m3u_tracing_list:
+    for item in global_variables.M3U_tracing_list:
         item: M3U_tracing
         
         M3U_file_list_cell = ''
@@ -105,7 +106,7 @@ def add_rows_to_table():
     
 def generate_preview():
     global show_preview
-    global m3u_tracing_list
+    global enable_preview_button
     
     global_variables.logger.debug(inspect.currentframe().f_code.co_name)
 
@@ -114,34 +115,60 @@ def generate_preview():
     global_variables.ui_M3U_preview_table.rows.clear()
     global_variables.ui_M3U_preview_table.update()
 
-    if global_variables.ui_M3U_source_path_input.error != None:
-        message = 'Cannot generate preview. Source path not valid'
-        global_variables.logger.info(message)
-        ui.notify(message)
-        return
+    # do the checks. if False (ko) exit
+    if not check_for_preview():
+        return False
+    
+    global_variables.M3U_tracing_list.clear()
 
-    if global_variables.user_data.create_m3u.use_centralized_folder:
-        if global_variables.user_data.create_m3u.destination_path == '':
-            message = 'Cannot generate preview with "Create the M3U in a unique folder" flag and no Destination file location'
-            global_variables.logger.info(message)
-            ui.notify(message)
-            return
-        if global_variables.ui_M3U_destination_path_input.error != None:
-            message = 'Cannot generate preview. Destination path not valid'
-            global_variables.logger.info(message)
-            ui.notify(message)
-            return
+    enable_preview_button = False
+    # global_variables.ui_M3U_preview_button.enabled = False
+    # global_variables.ui_M3U_preview_button.update()
     
-    m3u_tracing_list.clear()
-    m3u_tracing_list = M3U_files_worker.generate_preview()
+    M3U_files_worker.generate_preview()
     
-    if len(m3u_tracing_list) > 0:
+    if len(global_variables.M3U_tracing_list) > 0:
         global_variables.ui_M3U_preview_table.rows.clear()
         global_variables.ui_M3U_preview_table.selected.clear()
         
         add_rows_to_table()
         
         show_preview = True
+          
+    enable_preview_button = True
+    # global_variables.ui_M3U_preview_button.enabled = True
+    # global_variables.ui_M3U_preview_button.update()
+
+
+def check_for_preview():
+    global_variables.logger.debug(inspect.currentframe().f_code.co_name)
+
+    if global_variables.ui_M3U_source_path_input.error != None:
+        message = 'Cannot generate preview. Source path not valid'
+        global_variables.logger.info(message)
+        ui.notify(message)
+        return False
+
+    if global_variables.user_data.create_m3u.use_centralized_folder:
+        if global_variables.user_data.create_m3u.destination_path == '':
+            message = 'Cannot generate preview with "Create the M3U in a unique folder" flag and no Destination file location'
+            global_variables.logger.info(message)
+            ui.notify(message)
+            return False
+        if global_variables.ui_M3U_destination_path_input.error != None:
+            message = 'Cannot generate preview. Destination path not valid'
+            global_variables.logger.info(message)
+            ui.notify(message)
+            return False
     
-    configuration_manager.write_configuration()
+    return True
     
+def generate_M3U():
+    global_variables.logger.debug(inspect.currentframe().f_code.co_name)
+    
+    if len(global_variables.M3U_tracing_list) == 0:
+        return False
+
+    M3U_files_worker.generate_M3U()
+    
+    return True

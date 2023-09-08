@@ -23,7 +23,8 @@ def return_default_user_data():
         create_m3u= Create_M3U(
             source_path=Path.cwd().as_posix(),
             use_centralized_folder= False,
-            destination_path= ''
+            destination_path= '',
+            overwrite=False
         )
     )
     return user_data
