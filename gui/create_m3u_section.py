@@ -1,4 +1,6 @@
 # standard and external libraries
+import asyncio
+import concurrent.futures
 import inspect
 import logging
 from nicegui import ui
@@ -104,7 +106,7 @@ def add_rows_to_table():
         ''')
     global_variables.ui_M3U_preview_table.update()
     
-def generate_preview():
+async def generate_preview():
     global show_preview
     global enable_preview_button
     
@@ -122,9 +124,18 @@ def generate_preview():
     global_variables.M3U_tracing_list.clear()
 
     enable_preview_button = False
-    # global_variables.ui_M3U_preview_button.enabled = False
-    # global_variables.ui_M3U_preview_button.update()
     
+    # add the spinner to apply the button enable change from enable_preview_button and show the loading animation
+    spinner = ui.spinner('dots', size='xl')
+    await asyncio.to_thread(generate_preview_async)
+
+    spinner.delete()
+
+def generate_preview_async():
+    global show_preview
+    global enable_preview_button
+    global_variables.logger.debug(inspect.currentframe().f_code.co_name)
+
     M3U_files_worker.generate_preview()
     
     if len(global_variables.M3U_tracing_list) > 0:
@@ -136,10 +147,7 @@ def generate_preview():
         show_preview = True
           
     enable_preview_button = True
-    # global_variables.ui_M3U_preview_button.enabled = True
-    # global_variables.ui_M3U_preview_button.update()
-
-
+    
 def check_for_preview():
     global_variables.logger.debug(inspect.currentframe().f_code.co_name)
 
