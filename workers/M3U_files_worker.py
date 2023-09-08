@@ -19,7 +19,7 @@ def generate_preview():
         if len(files) == 0:
             continue
 
-        root = Path(root).as_posix()
+        root = str(Path(root))
         global_variables.logger.debug('Working on folder ' + root)
         
         M3U_file_list = []
@@ -38,7 +38,8 @@ def generate_preview():
                 
                 # using a unique folder for the M3U files take to the full rom path in destination file
                 if global_variables.user_data.create_m3u.use_centralized_folder:
-                    M3U_file_list.append(Path(global_variables.user_data.create_m3u.destination_path).as_posix() + '/' + file)
+                    path_to_append = os.path.join(str(Path(global_variables.user_data.create_m3u.destination_path)), file)
+                    M3U_file_list.append(path_to_append)
                 else:
                     M3U_file_list.append(file)
             else:
@@ -55,7 +56,7 @@ def generate_preview():
                 M3U_path = Path(global_variables.user_data.create_m3u.destination_path) / M3U_file_name
             else:
                 M3U_path = Path(root) / M3U_file_name
-
+            
             if Path(M3U_path).exists() and Path(M3U_path).is_file() and not global_variables.user_data.create_m3u.overwrite:
                 global_variables.logger.debug(str(Path(M3U_path).name) + ' already exist. Not overwriting')
                 continue
@@ -73,6 +74,7 @@ def generate_preview():
 def generate_M3U():
     global_variables.logger.debug(inspect.currentframe().f_code.co_name)
     
+    created_m3u_files = 0
     for item in global_variables.M3U_tracing_list:
         item: M3U_tracing
         if Path(item.M3U_path).exists() and Path(item.M3U_path).is_file() and not global_variables.user_data.create_m3u.overwrite:
@@ -87,6 +89,10 @@ def generate_M3U():
                 file.write(element)
                 count = count + 1
             file.close
+            
+        global_variables.logger.info('Created M3U file ' + str(Path(item.M3U_path)) + ' with this files into: ' + str(item.M3U_file_list))
+        created_m3u_files += 1
+    return created_m3u_files
         
     
 def check_extesion(file):

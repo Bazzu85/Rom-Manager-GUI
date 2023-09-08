@@ -1,8 +1,6 @@
 # standard and external libraries
 import asyncio
-import concurrent.futures
 import inspect
-import logging
 from nicegui import ui
 from pathlib import Path
 
@@ -14,6 +12,7 @@ import workers.M3U_files_worker as M3U_files_worker
 
 show_preview = False
 enable_preview_button = True
+enable_generate_button = True
 
 def create_M3U_files_section():
     global show_preview
@@ -38,7 +37,7 @@ def create_M3U_files_section():
             global_variables.ui_M3U_overwrite_switch = ui.switch("Overwrite existing M3U files")
         with ui.row().classes('w-full items-center'):
             global_variables.ui_M3U_preview_button = ui.button('Preview', on_click=generate_preview)
-            global_variables.ui_M3U_generate_button = ui.button('Generate M3U', on_click=generate_M3U).bind_visibility_from(globals(), 'show_preview')
+            global_variables.ui_M3U_generate_button = ui.button('Generate M3U', on_click=generate_M3U)
         with ui.row().classes('w-full items-center').bind_visibility_from(globals(), 'show_preview'):
             add_table_to_ui()
             
@@ -57,6 +56,8 @@ def apply_bindings():
     global_variables.ui_M3U_overwrite_switch.bind_value(global_variables.user_data.create_m3u, 'overwrite')
     global_variables.ui_M3U_overwrite_switch.bind_enabled_from(globals(), 'enable_preview_button')
     global_variables.ui_M3U_preview_button.bind_enabled_from(globals(), 'enable_preview_button')
+    global_variables.ui_M3U_generate_button.bind_enabled_from(globals(), 'enable_generate_button')
+    global_variables.ui_M3U_generate_button.bind_visibility_from(globals(), 'show_preview')
 
 def add_table_to_ui():
     columns = [
@@ -81,7 +82,7 @@ def add_rows_to_table():
                 M3U_file_list_cell = M3U_file_list_cell + '<br>' + M3U_file
                 
         global_variables.ui_M3U_preview_table.rows.append({
-            'm3u_folder': Path(item.M3U_path).parent.as_posix(),
+            'm3u_folder': str(Path(item.M3U_path).parent),
             'm3u_file': Path(item.M3U_path).name,
             'm3u_file_list': item.M3U_file_list
         })
@@ -170,12 +171,31 @@ def check_for_preview():
     
     return True
     
-def generate_M3U():
+async def generate_M3U():
+    global show_preview
+    global enable_generate_button
+    
     global_variables.logger.debug(inspect.currentframe().f_code.co_name)
     
     if len(global_variables.M3U_tracing_list) == 0:
         return False
 
-    M3U_files_worker.generate_M3U()
+    enable_generate_button = False
     
-    return True
+    # add the spinner to apply the button enable change from enable_preview_button and show the loading animation
+    spinner = ui.spinner('dots', size='xl')
+    created_m3u_files = await asyncio.to_thread(M3U_files_worker.generate_M3U)
+
+    if created_m3u_files > 0:
+        message = 'Generated ' + str(created_m3u_files) + ' M3U files. Check log for details'
+        ui.notify(message)
+        global_variables.logger.info(message)
+        
+        show_preview = False
+        global_variables.ui_M3U_preview_table.rows.clear()
+        global_variables.ui_M3U_preview_table.update()
+
+    enable_generate_button = True
+    
+    spinner.delete()
+

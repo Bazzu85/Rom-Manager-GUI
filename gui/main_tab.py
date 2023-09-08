@@ -1,7 +1,6 @@
 # standard and external libraries
 import inspect
 from nicegui import ui
-from pathlib import Path
 
 # project libraries
 import src.global_variables as global_variables

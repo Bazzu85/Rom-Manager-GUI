@@ -9,7 +9,6 @@ from pathlib import Path
 # project libraries
 import obj.configuration as conf
 import src.global_variables as global_variables
-import src.pathManager as pathManager
 import src.log_manager as log_manager
 
 def read_configuration():

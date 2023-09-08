@@ -21,7 +21,7 @@ class Create_M3U():
 def return_default_user_data():
     user_data = User_Data(
         create_m3u= Create_M3U(
-            source_path=Path.cwd().as_posix(),
+            source_path=str(Path.cwd()),
             use_centralized_folder= False,
             destination_path= '',
             overwrite=False

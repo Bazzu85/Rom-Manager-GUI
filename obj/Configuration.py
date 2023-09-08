@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 class Configuration():
@@ -25,7 +26,7 @@ def return_default_configuration():
         debug= False,
         redirect_logs_to_console= False,
         run_in_native_mode= False,
-        log_file= Path.cwd().as_posix() + '/log/log.txt',
+        log_file= os.path.join(str(Path.cwd()), 'log', 'log.txt'),
         port_number= 40000,
         extensions_for_file_move=['.bin' , '.cue'],
         extensions_for_M3U= ['.cue'],

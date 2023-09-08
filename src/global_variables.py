@@ -1,5 +1,6 @@
 # standard and external libraries
 import logging
+import os
 from nicegui import ui
 from pathlib import *
 
@@ -9,14 +10,13 @@ import obj.user_data as ud
 
 configuration = conf.return_default_configuration()
 
-configuration_file = Path.cwd().as_posix() + '/configuration/configuration.json'
+configuration_file = os.path.join(str(Path.cwd()), 'configuration',  'configuration.json')
 
 user_data = ud.return_default_user_data()
 user_data_on_file_json = ''
 user_data_json = ''
 
-configuration_file = Path.cwd().as_posix() + '/configuration/configuration.json'
-user_data_file = Path.cwd().as_posix() + '/configuration/user_data.json'
+user_data_file = os.path.join(str(Path.cwd()), 'configuration',  'user_data.json')
 
 # using a custom name prevent enabling other library logs
 # for example enabling a default log, enable the watched files log of univcorn causing a log loop
