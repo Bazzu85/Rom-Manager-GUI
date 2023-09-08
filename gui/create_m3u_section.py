@@ -58,7 +58,6 @@ def apply_bindings():
     global_variables.ui_M3U_overwrite_switch.bind_enabled_from(globals(), 'enable_preview_button')
     global_variables.ui_M3U_preview_button.bind_enabled_from(globals(), 'enable_preview_button')
 
-
 def add_table_to_ui():
     columns = [
                 {'name': 'm3u_folder', 'label': 'Folder', 'field': 'm3u_folder', 'required': True, 'align': 'left', 'sortable': True},
@@ -134,17 +133,8 @@ async def generate_preview():
     
     # add the spinner to apply the button enable change from enable_preview_button and show the loading animation
     spinner = ui.spinner('dots', size='xl')
-    await asyncio.to_thread(generate_preview_async)
+    await asyncio.to_thread(M3U_files_worker.generate_preview)
 
-    spinner.delete()
-
-def generate_preview_async():
-    global show_preview
-    global enable_preview_button
-    global_variables.logger.debug(inspect.currentframe().f_code.co_name)
-
-    M3U_files_worker.generate_preview()
-    
     if len(global_variables.M3U_tracing_list) > 0:
         global_variables.ui_M3U_preview_table.rows.clear()
         global_variables.ui_M3U_preview_table.selected.clear()
@@ -155,6 +145,8 @@ def generate_preview_async():
           
     enable_preview_button = True
     
+    spinner.delete()
+
 def check_for_preview():
     global_variables.logger.debug(inspect.currentframe().f_code.co_name)
 
