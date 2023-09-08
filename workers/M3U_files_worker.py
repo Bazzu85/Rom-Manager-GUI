@@ -73,6 +73,22 @@ def generate_preview():
 def generate_M3U():
     global_variables.logger.debug(inspect.currentframe().f_code.co_name)
     
+    for item in global_variables.M3U_tracing_list:
+        item: M3U_tracing
+        if Path(item.M3U_path).exists() and Path(item.M3U_path).is_file() and not global_variables.user_data.create_m3u.overwrite:
+            global_variables.logger.info('M3U file ' + Path(item.M3U_path).name + ' already created and overwrite not selected. Skipping')
+            continue
+        
+        with open(file=item.M3U_path, mode="w") as file:
+            count = 0
+            for element in item.M3U_file_list:
+                if count != 0:
+                    file.write("\n")
+                file.write(element)
+                count = count + 1
+            file.close
+        
+    
 def check_extesion(file):
     global_variables.logger.debug(inspect.currentframe().f_code.co_name)
     file_extension = Path(file).suffix
