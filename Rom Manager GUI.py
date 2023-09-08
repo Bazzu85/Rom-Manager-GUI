@@ -16,6 +16,7 @@ def startup():
     
 def shutdown():
     global_variables.logger.info('Shutting down application')
+    user_data_manager.write_user_data()
     
 def connect():
     global_variables.logger.info('Client connecting')
@@ -31,6 +32,11 @@ configuration_manager.read_configuration()
 # to use the instance manager the ui.run need to be started with reload=False
 me = instance_manager.SingleInstance()
 
+# read the user_data from file and set the log level
+user_data_manager.read_user_data()
+user_data_manager.schedule_write()
+
+
 main_gui.createGUI()
 
 app.on_startup(startup)
@@ -41,7 +47,6 @@ app.on_disconnect(disconnect)
 title = 'Rom Manager GUI'
 icon = 'icon.png'
 
-global_variables.configuration.run_in_native_mode = False
 if global_variables.configuration.run_in_native_mode:
     app.native.start_args['debug'] = global_variables.configuration.debug
     app.native.start_args['debug'] = False

@@ -12,15 +12,12 @@ from obj.m3u_tracing import M3U_tracing
 def generate_preview():
     global_variables.logger.debug(inspect.currentframe().f_code.co_name)
     
-    M3U_tracing_list: [M3U_tracing()] = []
-    M3U_tracing_list.clear()
+    M3U_tracing_list = []
     
-    source_path = global_variables.ui_M3U_source_path_input.value
-    destination_path = global_variables.ui_M3U_destination_path_input.value
-    global_variables.logger.debug('Working on ' + source_path + ' path')
+    global_variables.logger.debug('Working on ' + global_variables.user_data.create_m3u.source_path + ' path')
     
     # using the os.walk instead of rglob because return in an entry the folder and all it's files
-    for root, folders, files in os.walk(source_path):
+    for root, folders, files in os.walk(global_variables.user_data.create_m3u.source_path):
         if len(files) == 0:
             continue
 
@@ -39,7 +36,12 @@ def generate_preview():
             # check if the current file is allowed (multidisk pattern)
             if re.search(global_variables.regex_multi_disc, file, re.IGNORECASE):
                 global_variables.logger.debug('Item is ok [multidisk pattern]')
-                M3U_file_list.append(file)
+                
+                # using a unique folder for the M3U files take to the full rom path in destination file
+                if global_variables.user_data.create_m3u.use_centralized_folder:
+                    M3U_file_list.append(Path(global_variables.user_data.create_m3u.destination_path).as_posix() + '/' + file)
+                else:
+                    M3U_file_list.append(file)
             else:
                 global_variables.logger.debug('Item is not ok [multidisk pattern]')
                 continue
@@ -49,8 +51,8 @@ def generate_preview():
             # calculate the M3U path
             M3U_file_name = str(Path(root).name) + '.m3u'
 
-            if destination_path != '':
-                M3U_path = Path(destination_path) / M3U_file_name
+            if global_variables.user_data.create_m3u.use_centralized_folder:
+                M3U_path = Path(global_variables.user_data.create_m3u.destination_path) / M3U_file_name
             else:
                 M3U_path = Path(root) / M3U_file_name
                 

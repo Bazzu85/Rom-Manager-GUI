@@ -10,11 +10,13 @@ class Create_M3U():
     def __init__(self, 
                  source_path, 
                  use_centralized_folder, 
-                 destination_path
+                 destination_path,
+                 overwrite
                  ):
         self.source_path = source_path
         self.use_centralized_folder = use_centralized_folder
         self.destination_path = destination_path
+        self.overwrite = overwrite
         
 def return_default_user_data():
     user_data = User_Data(

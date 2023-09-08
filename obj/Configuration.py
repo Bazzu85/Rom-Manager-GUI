@@ -8,8 +8,7 @@ class Configuration():
                  log_file,
                  port_number,
                  extensions_for_file_move,
-                 extensions_for_M3U,
-                 last_used_rom_path
+                 extensions_for_M3U
                  ):
         self.debug = debug
         self.redirect_logs_to_console = redirect_logs_to_console
@@ -18,7 +17,6 @@ class Configuration():
         self.port_number = port_number
         self.extensions_for_file_move = extensions_for_file_move
         self.extensions_for_M3U = extensions_for_M3U
-        self.last_used_rom_path = last_used_rom_path
     def convert_port_number_to_int(self):
         self.port_number = int(self.port_number)
         
@@ -31,7 +29,6 @@ def return_default_configuration():
         port_number= 40000,
         extensions_for_file_move=['.bin' , '.cue'],
         extensions_for_M3U= ['.cue'],
-        last_used_rom_path= Path.cwd().as_posix()
     )
     return configuration
         

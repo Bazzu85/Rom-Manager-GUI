@@ -1,6 +1,7 @@
 # standard and external libraries
 import inspect
 import logging
+import sys
 from typing import Any
 import jsonpickle
 from pathlib import Path
@@ -29,7 +30,7 @@ def read_configuration():
         message = 'Configuration file missing. A default file is been created at ' + global_variables.configuration_file
         print(message)
         global_variables.logger.info(message)
-        exit()
+        sys.exit(-1)
     
     # if configuration file exist, read it from file
     with open(file=global_variables.configuration_file, mode='r') as file:

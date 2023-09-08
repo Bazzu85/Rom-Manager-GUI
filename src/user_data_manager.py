@@ -4,6 +4,7 @@ import logging
 from typing import Any
 import jsonpickle
 from pathlib import Path
+from nicegui import ui
 
 # project libraries
 import obj.user_data as ud
@@ -45,6 +46,9 @@ def read_user_data():
         new_user_data_json_string = jsonpickle.encode(new_user_data)
         if new_user_data_json_string != jsonString:
             write_user_data()
+        else:
+            global_variables.user_data_on_file_json = new_user_data_json_string
+
             
            
 def add_missing_attributes(new_user_data):
@@ -100,11 +104,22 @@ def remove_not_needed_attributes(new_user_data):
 def write_user_data():
     global_variables.logger.debug(inspect.currentframe().f_code.co_name)
     
+    # check if current user_data differ from the one in the file
+    global_variables.user_data_json = jsonpickle.encode(global_variables.user_data)
+    if global_variables.user_data_json == global_variables.user_data_on_file_json:
+        global_variables.logger.debug('Not writing to file. user_data_json and user_data_on_file_json are the same')
+        return
+    
     # create config file directory if missing
     Path(global_variables.user_data_file).parent.mkdir(exist_ok=True)
 
-    jsonString = jsonpickle.encode(global_variables.user_data)
+    global_variables.user_data_on_file_json = global_variables.user_data_json
     with open(file=global_variables.user_data_file, mode='w') as file:
-        file.write(jsonString)
+        file.write(global_variables.user_data_json)
+        global_variables.logger.debug('Saved user_data.')
         file.close
     
+def schedule_write():
+    global_variables.logger.debug(inspect.currentframe().f_code.co_name)
+
+    ui.timer(60.0, lambda: write_user_data())
