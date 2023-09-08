@@ -33,11 +33,11 @@ def create_M3U_files_section():
                                                              validation={
                                                                  'Path not valid': lambda value: Path(value).is_dir()
                                                                  }, 
-                                                             ).classes('w-full').bind_visibility_from(global_variables.ui_M3U_use_centralized_folder_switch, 'value')
+                                                             ).classes('w-full')
         with ui.row().classes('w-full items-center'):
             global_variables.ui_M3U_overwrite_switch = ui.switch("Overwrite existing M3U files")
         with ui.row().classes('w-full items-center'):
-            global_variables.ui_M3U_preview_button = ui.button('Preview', on_click=generate_preview).bind_enabled_from(globals(), 'enable_preview_button')
+            global_variables.ui_M3U_preview_button = ui.button('Preview', on_click=generate_preview)
             global_variables.ui_M3U_generate_button = ui.button('Generate M3U', on_click=generate_M3U).bind_visibility_from(globals(), 'show_preview')
         with ui.row().classes('w-full items-center').bind_visibility_from(globals(), 'show_preview'):
             add_table_to_ui()
@@ -48,9 +48,16 @@ def create_M3U_files_section():
 def apply_bindings():
     global_variables.logger.debug(inspect.currentframe().f_code.co_name)
     global_variables.ui_M3U_source_path_input.bind_value(global_variables.user_data.create_m3u, 'source_path')
+    global_variables.ui_M3U_source_path_input.bind_enabled_from(globals(), 'enable_preview_button')
     global_variables.ui_M3U_use_centralized_folder_switch.bind_value(global_variables.user_data.create_m3u, 'use_centralized_folder')
+    global_variables.ui_M3U_use_centralized_folder_switch.bind_enabled_from(globals(), 'enable_preview_button')
     global_variables.ui_M3U_destination_path_input.bind_value(global_variables.user_data.create_m3u, 'destination_path')
+    global_variables.ui_M3U_destination_path_input.bind_enabled_from(globals(), 'enable_preview_button')
+    global_variables.ui_M3U_destination_path_input.bind_visibility_from(global_variables.ui_M3U_use_centralized_folder_switch, 'value')
     global_variables.ui_M3U_overwrite_switch.bind_value(global_variables.user_data.create_m3u, 'overwrite')
+    global_variables.ui_M3U_overwrite_switch.bind_enabled_from(globals(), 'enable_preview_button')
+    global_variables.ui_M3U_preview_button.bind_enabled_from(globals(), 'enable_preview_button')
+
 
 def add_table_to_ui():
     columns = [
