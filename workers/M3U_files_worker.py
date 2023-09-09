@@ -39,7 +39,7 @@ def generate_preview():
                 
                 # using a unique folder for the M3U files take to the full rom path in destination file
                 if global_variables.user_data.create_m3u.use_centralized_folder:
-                    path_to_append = os.path.join(str(Path(global_variables.user_data.create_m3u.destination_path)), file)
+                    path_to_append = os.path.join(str(Path(root)), file)
                     M3U_file_list.append(path_to_append)
                 else:
                     M3U_file_list.append(file)
@@ -95,7 +95,7 @@ def generate_M3U():
                 count = count + 1
             file.close
             
-        global_variables.logger.info('Created M3U file ' + str(Path(item.M3U_path)) + ' with this files into: ' + str(item.M3U_file_list))
+        global_variables.logger.info('Created M3U file ' + str(Path(item.M3U_path)) + ' with this discs into: ' + str(item.M3U_file_list))
         created_m3u_files += 1
 
     return created_m3u_files
