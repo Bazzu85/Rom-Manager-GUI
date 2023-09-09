@@ -5,7 +5,6 @@ from pathlib import *
 
 # project libraries
 import src.global_variables as global_variables
-import src.pathManager as pathManager
 
 def setLogging(log_level):
     # create log file directory if missing
@@ -26,3 +25,5 @@ def setLogging(log_level):
         global_variables.logger.addHandler(console_handler)
     else:
         global_variables.logger.removeHandler(console_handler)
+
+    global_variables.logger.info('Setted logging level to ' + str(log_level))

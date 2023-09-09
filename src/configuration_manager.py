@@ -36,7 +36,7 @@ def read_configuration():
         jsonString = file.read()
         file.close
         newConfiguration = conf.return_default_configuration()
-        newConfiguration = jsonpickle.decode(jsonString)
+        newConfiguration: conf.Configuration = jsonpickle.decode(jsonString)
         newConfiguration.convert_port_number_to_int()
         newConfiguration = add_missing_attributes(newConfiguration)
         newConfiguration = remove_not_needed_attributes(newConfiguration)

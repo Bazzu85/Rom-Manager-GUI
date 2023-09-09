@@ -29,7 +29,7 @@ def return_default_configuration():
         log_file= os.path.join(str(Path.cwd()), 'log', 'log.txt'),
         port_number= 40000,
         extensions_for_file_move=['.bin' , '.cue'],
-        extensions_for_M3U= ['.cue'],
+        extensions_for_M3U= ['.cue']
     )
     return configuration
         

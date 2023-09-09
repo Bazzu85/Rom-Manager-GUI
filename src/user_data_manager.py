@@ -16,7 +16,6 @@ def read_user_data():
 
     # the logging level is not yet setted so for test purpose we set forced here
     # comment after finish
-    log_manager.setLogging(logging.DEBUG)
     global_variables.logger.debug(inspect.currentframe().f_code.co_name)
     
     # create user_data file directory if missing
