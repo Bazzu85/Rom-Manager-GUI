@@ -2,6 +2,7 @@
 import inspect
 import os
 import re
+import time
 from nicegui import ui
 from pathlib import Path
 
@@ -92,6 +93,7 @@ def generate_M3U():
             
         global_variables.logger.info('Created M3U file ' + str(Path(item.M3U_path)) + ' with this files into: ' + str(item.M3U_file_list))
         created_m3u_files += 1
+
     return created_m3u_files
         
     

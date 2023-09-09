@@ -11,12 +11,11 @@ from obj.m3u_tracing import M3U_tracing
 import workers.M3U_files_worker as M3U_files_worker
 
 show_preview = False
-enable_preview_button = True
-enable_generate_button = True
+enable_ui_elements = True
 
 def create_M3U_files_section():
     global show_preview
-    global enable_preview_button
+    global enable_ui_elements
     global_variables.logger.debug(inspect.currentframe().f_code.co_name)
     with ui.card().classes('w-full items-center no-shadow'):
         with ui.row().classes('w-full items-center'):
@@ -47,16 +46,16 @@ def create_M3U_files_section():
 def apply_bindings():
     global_variables.logger.debug(inspect.currentframe().f_code.co_name)
     global_variables.ui_M3U_source_path_input.bind_value(global_variables.user_data.create_m3u, 'source_path')
-    global_variables.ui_M3U_source_path_input.bind_enabled_from(globals(), 'enable_preview_button')
+    global_variables.ui_M3U_source_path_input.bind_enabled_from(globals(), 'enable_ui_elements')
     global_variables.ui_M3U_use_centralized_folder_switch.bind_value(global_variables.user_data.create_m3u, 'use_centralized_folder')
-    global_variables.ui_M3U_use_centralized_folder_switch.bind_enabled_from(globals(), 'enable_preview_button')
+    global_variables.ui_M3U_use_centralized_folder_switch.bind_enabled_from(globals(), 'enable_ui_elements')
     global_variables.ui_M3U_destination_path_input.bind_value(global_variables.user_data.create_m3u, 'destination_path')
-    global_variables.ui_M3U_destination_path_input.bind_enabled_from(globals(), 'enable_preview_button')
+    global_variables.ui_M3U_destination_path_input.bind_enabled_from(globals(), 'enable_ui_elements')
     global_variables.ui_M3U_destination_path_input.bind_visibility_from(global_variables.ui_M3U_use_centralized_folder_switch, 'value')
     global_variables.ui_M3U_overwrite_switch.bind_value(global_variables.user_data.create_m3u, 'overwrite')
-    global_variables.ui_M3U_overwrite_switch.bind_enabled_from(globals(), 'enable_preview_button')
-    global_variables.ui_M3U_preview_button.bind_enabled_from(globals(), 'enable_preview_button')
-    global_variables.ui_M3U_generate_button.bind_enabled_from(globals(), 'enable_generate_button')
+    global_variables.ui_M3U_overwrite_switch.bind_enabled_from(globals(), 'enable_ui_elements')
+    global_variables.ui_M3U_preview_button.bind_enabled_from(globals(), 'enable_ui_elements')
+    global_variables.ui_M3U_generate_button.bind_enabled_from(globals(), 'enable_ui_elements')
     global_variables.ui_M3U_generate_button.bind_visibility_from(globals(), 'show_preview')
 
 def add_table_to_ui():
@@ -115,7 +114,7 @@ def add_rows_to_table():
     
 async def generate_preview():
     global show_preview
-    global enable_preview_button
+    global enable_ui_elements
     
     global_variables.logger.debug(inspect.currentframe().f_code.co_name)
 
@@ -130,9 +129,9 @@ async def generate_preview():
     
     global_variables.M3U_tracing_list.clear()
 
-    enable_preview_button = False
+    enable_ui_elements = False
     
-    # add the spinner to apply the button enable change from enable_preview_button and show the loading animation
+    # add the spinner to apply the ui enable change from enable_ui_elements and show the loading animation
     spinner = ui.spinner('dots', size='xl')
     await asyncio.to_thread(M3U_files_worker.generate_preview)
 
@@ -144,7 +143,7 @@ async def generate_preview():
         
         show_preview = True
           
-    enable_preview_button = True
+    enable_ui_elements = True
     
     spinner.delete()
 
@@ -173,16 +172,16 @@ def check_for_preview():
     
 async def generate_M3U():
     global show_preview
-    global enable_generate_button
+    global enable_ui_elements
     
     global_variables.logger.debug(inspect.currentframe().f_code.co_name)
     
     if len(global_variables.M3U_tracing_list) == 0:
         return False
 
-    enable_generate_button = False
+    enable_ui_elements = False
     
-    # add the spinner to apply the button enable change from enable_preview_button and show the loading animation
+    # add the spinner to apply the ui enable change from enable_ui_elements and show the loading animation
     spinner = ui.spinner('dots', size='xl')
     created_m3u_files = await asyncio.to_thread(M3U_files_worker.generate_M3U)
 
@@ -195,7 +194,7 @@ async def generate_M3U():
         global_variables.ui_M3U_preview_table.rows.clear()
         global_variables.ui_M3U_preview_table.update()
 
-    enable_generate_button = True
+    enable_ui_elements = True
     
     spinner.delete()
 
