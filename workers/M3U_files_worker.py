@@ -50,6 +50,10 @@ def generate_preview():
         M3U_file_list = sorted(M3U_file_list)
         # if for the folder we found some files for the M3U playlist, trace it
         if len(M3U_file_list) > 0:
+            if len(M3U_file_list) == 1:
+                global_variables.logger.debug('Only 1 disk found. Not creating m3u file')
+                continue
+
             # calculate the M3U path
             M3U_file_name = str(Path(root).name) + '.m3u'
             
