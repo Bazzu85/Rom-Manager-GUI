@@ -36,6 +36,15 @@ ui_config_extensions_for_file_move_dialog: ui.dialog
 ui_config_extensions_for_M3U_label: ui.label
 ui_config_extensions_for_M3U_dialog: ui.dialog
 
+ui_move_roms_choice_radio: ui.radio
+ui_move_roms_source_path_input: ui.input
+ui_move_roms_use_different_folder_switch: ui.switch
+ui_move_roms_destination_path_input: ui.input
+ui_move_roms_preview_button: ui.button
+ui_move_roms_run_button: ui.button
+ui_move_roms_preview_table: ui.table
+move_roms_tracing_list = []
+
 ui_M3U_source_path_input: ui.input
 ui_M3U_use_centralized_folder_switch: ui.switch
 ui_M3U_destination_path_input: ui.input
