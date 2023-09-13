@@ -30,6 +30,7 @@ ui_config_redirect_logs_to_console_switch: ui.switch
 ui_config_run_in_native_mode_switch: ui.switch
 ui_config_log_file_input: ui.input
 ui_config_port_number: ui.number
+ui_config_write_user_data_every: ui.number
 ui_config_extensions_for_file_move_label: ui.label
 ui_config_extensions_for_file_move_dialog: ui.dialog
 ui_config_extensions_for_M3U_label: ui.label

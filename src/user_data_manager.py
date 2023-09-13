@@ -121,4 +121,4 @@ def write_user_data():
 def schedule_write():
     global_variables.logger.debug(inspect.currentframe().f_code.co_name)
 
-    ui.timer(60.0, lambda: write_user_data())
+    ui.timer(global_variables.configuration.write_user_data_every, lambda: write_user_data())

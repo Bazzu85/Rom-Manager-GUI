@@ -8,6 +8,7 @@ class Configuration():
                  run_in_native_mode, 
                  log_file,
                  port_number,
+                 write_user_data_every,
                  extensions_for_file_move,
                  extensions_for_M3U
                  ):
@@ -15,6 +16,7 @@ class Configuration():
         self.redirect_logs_to_console = redirect_logs_to_console
         self.run_in_native_mode = run_in_native_mode
         self.log_file = log_file
+        self.write_user_data_every = write_user_data_every
         self.port_number = port_number
         self.extensions_for_file_move = extensions_for_file_move
         self.extensions_for_M3U = extensions_for_M3U
@@ -28,6 +30,7 @@ def return_default_configuration():
         run_in_native_mode= False,
         log_file= os.path.join(str(Path.cwd()), 'log', 'log.txt'),
         port_number= 40000,
+        write_user_data_every= 60.0,
         extensions_for_file_move=['.bin' , '.cue'],
         extensions_for_M3U= ['.cue']
     )

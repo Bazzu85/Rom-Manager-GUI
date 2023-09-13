@@ -34,6 +34,8 @@ me = instance_manager.SingleInstance()
 
 # read the user_data from file and set the log level
 user_data_manager.read_user_data()
+
+# schedule the user_data write to file every x seconds (default 60)
 user_data_manager.schedule_write()
 
 
