@@ -52,7 +52,7 @@ ui_M3U_overwrite_switch: ui.switch
 ui_M3U_preview_button: ui.button
 ui_M3U_generate_button: ui.button
 ui_M3U_preview_table: ui.table
-M3U_tracing_list = []
+m3u_tracing_list = []
 
 # regex string to find if a file refer to a multidisc format
 regex_multi_disc = r"(\(Disc .+?\)|\(Disk .+?\)|\(Bonus Disc\))"

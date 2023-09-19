@@ -75,7 +75,7 @@ def add_table_to_ui():
 def add_rows_to_table():
     global_variables.logger.debug(inspect.currentframe().f_code.co_name)
 
-    for item in global_variables.M3U_tracing_list:
+    for item in global_variables.m3u_tracing_list:
         item: M3U_tracing
         
         M3U_file_list_cell = ''
@@ -132,7 +132,7 @@ async def generate_preview():
     if not check_for_preview():
         return False
     
-    global_variables.M3U_tracing_list.clear()
+    global_variables.m3u_tracing_list.clear()
 
     enable_ui_elements = False
     
@@ -140,7 +140,7 @@ async def generate_preview():
     spinner = ui.spinner('dots', size='xl')
     await asyncio.to_thread(m3u_files_worker.generate_preview)
 
-    if len(global_variables.M3U_tracing_list) > 0:
+    if len(global_variables.m3u_tracing_list) > 0:
         global_variables.ui_M3U_preview_table.rows.clear()
         global_variables.ui_M3U_preview_table.selected.clear()
         
@@ -181,7 +181,7 @@ async def generate_M3U():
     
     global_variables.logger.debug(inspect.currentframe().f_code.co_name)
     
-    if len(global_variables.M3U_tracing_list) == 0:
+    if len(global_variables.m3u_tracing_list) == 0:
         return False
 
     enable_ui_elements = False

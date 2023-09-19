@@ -68,7 +68,7 @@ def generate_preview():
 
             global_variables.logger.debug('Adding ' + str(M3U_file_list) + ' to M3U file ' + str(M3U_path))
             
-            global_variables.M3U_tracing_list.append(
+            global_variables.m3u_tracing_list.append(
                 M3U_tracing(
                     M3U_path=M3U_path,
                     M3U_file_list=M3U_file_list
@@ -80,7 +80,7 @@ def generate_M3U():
     global_variables.logger.debug(inspect.currentframe().f_code.co_name)
     
     created_m3u_files = 0
-    for item in global_variables.M3U_tracing_list:
+    for item in global_variables.m3u_tracing_list:
         item: M3U_tracing
         if Path(item.M3U_path).exists() and Path(item.M3U_path).is_file() and not global_variables.user_data.create_m3u.overwrite:
             global_variables.logger.info('M3U file ' + Path(item.M3U_path).name + ' already created and overwrite not selected. Skipping')

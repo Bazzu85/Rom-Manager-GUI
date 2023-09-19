@@ -14,7 +14,7 @@ show_move_roms_to_folder_elements = False
 show_preview = False
 enable_ui_elements = True
 
-def create_M3U_files_section():
+def create_move_roms_section():
     global show_move_roms_to_folder_elements
     global show_preview
     global enable_ui_elements
@@ -85,46 +85,14 @@ def add_table_to_ui():
 def add_rows_to_table():
     global_variables.logger.debug(inspect.currentframe().f_code.co_name)
 
-    for item in global_variables.Move_roms_tracing_list:
+    for item in global_variables.move_roms_tracing_list:
         item: Move_Tracing
         
-        M3U_file_list_cell = ''
-        for M3U_file in item.M3U_file_list:
-            if M3U_file_list_cell == '':
-                M3U_file_list_cell = M3U_file_list_cell + M3U_file
-            else:
-                M3U_file_list_cell = M3U_file_list_cell + '<br>' + M3U_file
-                
         global_variables.ui_move_roms_preview_table.rows.append({
-            'm3u_folder': str(Path(item.M3U_path).parent),
-            'm3u_file': Path(item.M3U_path).name,
-            'm3u_file_list': item.M3U_file_list
+            'source': item.source,
+            'destination': item.destination,
         })
     
-    # this add_slot are for build a non standard table with multirows cell
-    # the add_slot('header') loop over the props to add the column headers
-    # the add_slot('body') loop over the props to add the rows
-    # if the row is not m3u_file_list, add the value directly
-    # if the row is m3u_file_list, loop over the m3u_file_list previously added to the row as a list and create a div for every value 
-    global_variables.ui_move_roms_preview_table.add_slot('header', r'''
-        <q-tr :props="props">
-            <q-th v-for="col in props.cols" :key="col.name" :props="props">
-                {{ col.label }}
-            </q-th>
-        </q-tr>
-    ''')
-    global_variables.ui_move_roms_preview_table.add_slot('body', r'''
-        <q-tr :props="props">
-            <q-td v-for="col in props.cols" :key="col.name" :props="props">
-                <template v-if="col.name !== 'm3u_file_list'">
-                    {{ col.value }}
-                </template>
-                <template v-else>
-                    <div v-for="file in props.row.m3u_file_list" class="text-left">{{ file }}</div>
-                </template>
-            </q-td>
-        </q-tr>
-        ''')
     global_variables.ui_move_roms_preview_table.update()
     
 async def generate_preview():
@@ -142,15 +110,15 @@ async def generate_preview():
     if not check_for_preview():
         return False
     
-    global_variables.Move_roms_tracing_list.clear()
+    global_variables.move_roms_tracing_list.clear()
 
     enable_ui_elements = False
     
     # add the spinner to apply the ui enable change from enable_ui_elements and show the loading animation
     spinner = ui.spinner('dots', size='xl')
-    await asyncio.to_thread(M3U_files_worker.generate_preview)
+    await asyncio.to_thread(move_roms_worker.generate_preview)
 
-    if len(global_variables.Move_roms_tracing_list) > 0:
+    if len(global_variables.move_roms_tracing_list) > 0:
         global_variables.ui_move_roms_preview_table.rows.clear()
         global_variables.ui_move_roms_preview_table.selected.clear()
         
@@ -171,9 +139,9 @@ def check_for_preview():
         ui.notify(message)
         return False
 
-    if global_variables.user_data.create_m3u.use_centralized_folder:
-        if global_variables.user_data.create_m3u.destination_path == '':
-            message = 'Cannot generate preview with "Create the M3U in a unique folder" flag and no Destination file location'
+    if global_variables.user_data.move_roms.use_different_folder:
+        if global_variables.user_data.move_roms.destination_path == '':
+            message = 'Cannot generate preview with "Use different folder" flag and no Destination file location'
             global_variables.logger.info(message)
             ui.notify(message)
             return False
@@ -185,23 +153,23 @@ def check_for_preview():
     
     return True
     
-async def generate_M3U():
+async def run():
     global show_preview
     global enable_ui_elements
     
     global_variables.logger.debug(inspect.currentframe().f_code.co_name)
     
-    if len(global_variables.Move_roms_tracing_list) == 0:
+    if len(global_variables.move_roms_tracing_list) == 0:
         return False
 
     enable_ui_elements = False
     
     # add the spinner to apply the ui enable change from enable_ui_elements and show the loading animation
     spinner = ui.spinner('dots', size='xl')
-    created_m3u_files = await asyncio.to_thread(M3U_files_worker.generate_M3U)
+    moved_roms = await asyncio.to_thread(M3U_files_worker.generate_M3U)
 
-    if created_m3u_files > 0:
-        message = 'Generated ' + str(created_m3u_files) + ' M3U files. Check log for details'
+    if moved_roms > 0:
+        message = 'Moved ' + str(moved_roms) + ' roms. Check log for details'
         ui.notify(message)
         global_variables.logger.info(message)
         
