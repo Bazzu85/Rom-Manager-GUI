@@ -8,7 +8,7 @@ from pathlib import Path
 import src.global_variables as global_variables
 import src.configuration_manager as configuration_manager
 from obj.m3u_tracing import M3U_tracing
-import workers.M3U_files_worker as M3U_files_worker
+import workers.m3u_files_worker as m3u_files_worker
 
 show_preview = False
 enable_ui_elements = True
@@ -138,7 +138,7 @@ async def generate_preview():
     
     # add the spinner to apply the ui enable change from enable_ui_elements and show the loading animation
     spinner = ui.spinner('dots', size='xl')
-    await asyncio.to_thread(M3U_files_worker.generate_preview)
+    await asyncio.to_thread(m3u_files_worker.generate_preview)
 
     if len(global_variables.M3U_tracing_list) > 0:
         global_variables.ui_M3U_preview_table.rows.clear()
@@ -188,7 +188,7 @@ async def generate_M3U():
     
     # add the spinner to apply the ui enable change from enable_ui_elements and show the loading animation
     spinner = ui.spinner('dots', size='xl')
-    created_m3u_files = await asyncio.to_thread(M3U_files_worker.generate_M3U)
+    created_m3u_files = await asyncio.to_thread(m3u_files_worker.generate_M3U)
 
     if created_m3u_files > 0:
         message = 'Generated ' + str(created_m3u_files) + ' M3U files. Check log for details'
