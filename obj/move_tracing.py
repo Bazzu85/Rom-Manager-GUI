@@ -1,5 +1,5 @@
 class Move_Tracing():
-    def __init__(self):
-        self.source = ''
-        self.destination = ''
+    def __init__(self, source, destination):
+        self.source = source
+        self.destination = destination
     

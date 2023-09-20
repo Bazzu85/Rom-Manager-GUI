@@ -23,7 +23,7 @@ def generate_preview():
         root = str(Path(root))
         global_variables.logger.debug('Working on folder ' + root)
         
-        M3U_file_list = []
+        m3u_file_list = []
         
         for file in files:
             global_variables.logger.debug('Working on file ' + str(file))
@@ -40,17 +40,17 @@ def generate_preview():
                 # using a unique folder for the M3U files take to the full rom path in destination file
                 if global_variables.user_data.create_m3u.use_centralized_folder:
                     path_to_append = os.path.join(str(Path(root)), file)
-                    M3U_file_list.append(path_to_append)
+                    m3u_file_list.append(path_to_append)
                 else:
-                    M3U_file_list.append(file)
+                    m3u_file_list.append(file)
             else:
                 global_variables.logger.debug('Item is not ok [multidisk pattern]')
                 continue
         
-        M3U_file_list = sorted(M3U_file_list)
+        m3u_file_list = sorted(m3u_file_list)
         # if for the folder we found some files for the M3U playlist, trace it
-        if len(M3U_file_list) > 0:
-            if len(M3U_file_list) == 1:
+        if len(m3u_file_list) > 0:
+            if len(m3u_file_list) == 1:
                 global_variables.logger.debug('Only 1 disk found. Not creating m3u file')
                 continue
 
@@ -66,12 +66,12 @@ def generate_preview():
                 global_variables.logger.debug(str(Path(M3U_path).name) + ' already exist. Not overwriting')
                 continue
 
-            global_variables.logger.debug('Adding ' + str(M3U_file_list) + ' to M3U file ' + str(M3U_path))
+            global_variables.logger.debug('Adding ' + str(m3u_file_list) + ' to M3U file ' + str(M3U_path))
             
             global_variables.m3u_tracing_list.append(
                 M3U_tracing(
-                    M3U_path=M3U_path,
-                    M3U_file_list=M3U_file_list
+                    m3u_path=M3U_path,
+                    m3u_file_list=m3u_file_list
                 )
             )
             

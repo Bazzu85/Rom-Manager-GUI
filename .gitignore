@@ -5,3 +5,4 @@ Create exe.bat
 build
 dist
 *.spec
+test

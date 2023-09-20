@@ -29,7 +29,7 @@ def read_configuration():
         message = 'Configuration file missing. A default file is been created at ' + global_variables.configuration_file
         print(message)
         global_variables.logger.info(message)
-        sys.exit(-1)
+        return
     
     # if configuration file exist, read it from file
     with open(file=global_variables.configuration_file, mode='r') as file:

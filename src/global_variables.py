@@ -37,7 +37,10 @@ ui_config_extensions_for_M3U_label: ui.label
 ui_config_extensions_for_M3U_dialog: ui.dialog
 
 ui_move_roms_choice_radio: ui.radio
+MOVE_ROMS_TO_SUBFOLDER = 1
+MOVE_ROMS_TO_FOLDER = 2
 ui_move_roms_source_path_input: ui.input
+ui_move_roms_use_same_folder_for_multidisc_switch: ui.switch
 ui_move_roms_use_different_folder_switch: ui.switch
 ui_move_roms_destination_path_input: ui.input
 ui_move_roms_preview_button: ui.button
