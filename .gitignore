@@ -1,0 +1,7 @@
+log
+configuration
+*/__pycache__/*
+Create exe.bat
+build
+dist
+*.spec
