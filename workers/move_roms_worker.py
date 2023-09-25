@@ -80,6 +80,41 @@ def generate_preview_to_subfolder_multidisc(file, root):
             )
         )
         
+def generate_preview_to_subfolder_singledisc(file, root):
+    global_variables.logger.debug(inspect.currentframe().f_code.co_name)
+    
+    cleanedFileName = clean_file_name(file)
+
+    start from here
+    regexResult = re.split(global_variables.regex_multi_disc, cleanedFileName, re.IGNORECASE)
+    global_variables.logger.debug('Check multidisk regex result: ' + str(regexResult))
+    
+    # starts composing the destination folder
+    global_variables.logger.debug('Folder calculated before loop is: ' + destination_folder)
+
+    calculated_folder = ''
+    for item in regexResult:
+                            
+        if re.search(global_variables.regex_multi_disc, item, re.IGNORECASE):
+            global_variables.logger.debug('Multidisc pattern found in: ' + item + '. Breaking loop')
+            break
+        else:
+            global_variables.logger.debug('Multidisc pattern not found in: ' + item + '. Appending')
+            calculated_folder += item
+    
+    destination_folder = os.path.join(str(Path(global_variables.user_data.move_roms.source_path)), calculated_folder)
+    destination_folder = destination_folder.rstrip()
+
+    global_variables.logger.debug('New folder calculated after loop is: ' + destination_folder)
+
+    if (Path(root) != Path(destination_folder)):
+        global_variables.move_roms_tracing_list.append(
+            Move_Tracing(
+                source=os.path.join(root, file),
+                destination=destination_folder
+            )
+        )
+       
 def generate_M3U():
     global_variables.logger.debug(inspect.currentframe().f_code.co_name)
     
