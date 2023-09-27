@@ -71,6 +71,7 @@ def apply_bindings():
 
     global_variables.ui_move_roms_delete_empty_folders_switch.bind_value(global_variables.user_data.move_roms, 'delete_empty_folders')
     global_variables.ui_move_roms_delete_empty_folders_switch.bind_enabled_from(globals(), 'enable_ui_elements')
+    global_variables.ui_move_roms_delete_empty_folders_switch.bind_visibility_from(globals(), 'show_preview')
 
 def check_move_roms_choice():
     global show_move_roms_to_subfolder_elements
