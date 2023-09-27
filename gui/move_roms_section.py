@@ -35,14 +35,11 @@ def create_move_roms_section():
             global_variables.ui_move_roms_use_same_folder_for_multidisc_switch = ui.switch("Use the same folder for multidisc roms?")
         with ui.row().classes('w-full items-center').bind_visibility(globals(), 'show_move_roms_to_folder_elements'):
             global_variables.ui_move_roms_use_different_folder_switch = ui.switch("Use as destination folder a custom folder?")
-            global_variables.ui_move_roms_destination_path_input = ui.input(label='Destination file location', 
-                                                             validation={
-                                                                 'Path not valid': lambda value: Path(value).is_dir()
-                                                                 }, 
-                                                             ).classes('w-full')
+            global_variables.ui_move_roms_destination_path_input = ui.input(label='Destination file location').classes('w-full')
         with ui.row().classes('w-full items-center'):
             global_variables.ui_move_roms_preview_button = ui.button('Preview', on_click=generate_preview)
             global_variables.ui_move_roms_run_button = ui.button('Run!', on_click=run)
+            global_variables.ui_move_roms_delete_empty_folders_switch = ui.switch("Delete empty folders at the end?")
         with ui.row().classes('w-full items-center').bind_visibility_from(globals(), 'show_preview'):
             add_table_to_ui()
             
@@ -72,6 +69,9 @@ def apply_bindings():
     global_variables.ui_move_roms_run_button.bind_enabled_from(globals(), 'enable_ui_elements')
     global_variables.ui_move_roms_run_button.bind_visibility_from(globals(), 'show_preview')
 
+    global_variables.ui_move_roms_delete_empty_folders_switch.bind_value(global_variables.user_data.move_roms, 'delete_empty_folders')
+    global_variables.ui_move_roms_delete_empty_folders_switch.bind_enabled_from(globals(), 'enable_ui_elements')
+
 def check_move_roms_choice():
     global show_move_roms_to_subfolder_elements
     global show_move_roms_to_folder_elements
@@ -86,8 +86,9 @@ def check_move_roms_choice():
     
 def add_table_to_ui():
     columns = [
-                {'name': 'source', 'label': 'Source', 'field': 'source', 'required': True, 'align': 'left', 'sortable': True},
-                {'name': 'destination', 'label': 'Destination', 'field': 'destination', 'required': True, 'align': 'left', 'sortable': True},
+                {'name': 'file', 'label': 'File', 'field': 'file', 'required': True, 'align': 'left', 'sortable': True},
+                {'name': 'source_folder', 'label': 'Source', 'field': 'source_folder', 'required': True, 'align': 'left', 'sortable': True},
+                {'name': 'destination_folder', 'label': 'Destination', 'field': 'destination_folder', 'required': True, 'align': 'left', 'sortable': True},
                 ]
     rows = []
     global_variables.ui_move_roms_preview_table = ui.table(columns=columns, rows=rows).classes('w-full')
@@ -99,8 +100,9 @@ def add_rows_to_table():
         item: Move_Tracing
         
         global_variables.ui_move_roms_preview_table.rows.append({
-            'source': item.source,
-            'destination': item.destination,
+            'file': item.file,
+            'source_folder': item.source_folder,
+            'destination_folder': item.destination_folder,
         })
     
     global_variables.ui_move_roms_preview_table.update()
@@ -128,7 +130,11 @@ async def generate_preview():
     spinner = ui.spinner('dots', size='xl')
     await asyncio.to_thread(move_roms_worker.generate_preview)
 
-    if len(global_variables.move_roms_tracing_list) > 0:
+    if len(global_variables.move_roms_tracing_list) == 0:
+        message = 'No moves to do'
+        ui.notify(message)
+        global_variables.logger.info(message)
+    else:
         global_variables.ui_move_roms_preview_table.rows.clear()
         global_variables.ui_move_roms_preview_table.selected.clear()
         
@@ -155,11 +161,6 @@ def check_for_preview():
             global_variables.logger.info(message)
             ui.notify(message)
             return False
-        if global_variables.ui_move_roms_destination_path_input.error != None:
-            message = 'Cannot generate preview. Destination path not valid'
-            global_variables.logger.info(message)
-            ui.notify(message)
-            return False
     
     return True
     
@@ -176,7 +177,7 @@ async def run():
     
     # add the spinner to apply the ui enable change from enable_ui_elements and show the loading animation
     spinner = ui.spinner('dots', size='xl')
-    moved_roms = await asyncio.to_thread(move_roms_worker.generate_M3U)
+    moved_roms = await asyncio.to_thread(move_roms_worker.move_roms)
 
     if moved_roms > 0:
         message = 'Moved ' + str(moved_roms) + ' roms. Check log for details'

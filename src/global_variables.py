@@ -45,6 +45,7 @@ ui_move_roms_use_different_folder_switch: ui.switch
 ui_move_roms_destination_path_input: ui.input
 ui_move_roms_preview_button: ui.button
 ui_move_roms_run_button: ui.button
+ui_move_roms_delete_empty_folders_switch: ui.switch
 ui_move_roms_preview_table: ui.table
 move_roms_tracing_list = []
 
@@ -58,7 +59,7 @@ ui_M3U_preview_table: ui.table
 m3u_tracing_list = []
 
 # regex string to find if a file refer to a multidisc format
-regex_multi_disc = r"(\(Disc .+?\)|\(Disk .+?\)|\(Bonus Disc\))"
+regex_multi_disc = r"( *\(Disc .+?\)| *\(Disk .+?\)| *\(Bonus Disc\))"
 # regex string to find part of filename to remove from the destination folder name
-regex_string_to_remove_for_destination_folder = r"(\(Track .+?\))"
+regex_string_to_remove_for_destination_folder = r" *\(Track .+?\)"
 

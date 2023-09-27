@@ -15,12 +15,14 @@ class Move_Roms():
                  use_same_folder_for_multidisc,
                  use_different_folder, 
                  destination_path,
+                 delete_empty_folders,
                  ):
         self.choice = choice
         self.source_path = source_path
         self.use_same_folder_for_multidisc = use_same_folder_for_multidisc
         self.use_different_folder = use_different_folder
         self.destination_path = destination_path
+        self.delete_empty_folders = delete_empty_folders
         
 class Create_M3U():
     def __init__(self, 
@@ -42,6 +44,7 @@ def return_default_user_data():
             use_same_folder_for_multidisc=False,
             use_different_folder= False,
             destination_path= '',
+            delete_empty_folders=False,
         ),
         create_m3u= Create_M3U(
             source_path=str(Path.cwd()),

@@ -6,14 +6,7 @@ import os
 # project libraries
 import src.global_variables as global_variables
 
-def addLastSlashIfMissing(path):
-    global_variables.logger.debug(inspect.currentframe().f_code.co_name)
-    global_variables.logger.debug(' path: ' + path)
-    if not path.endswith('\\'):
-            path += '\\'
-    return path
-    
-def deleteEmptyFolders(path):
+def delete_empty_folders(path):
     global_variables.logger.debug(inspect.currentframe().f_code.co_name)
     global_variables.logger.debug(' path: ' + path)
     for root, folders, files in os.walk(path, topdown=False):

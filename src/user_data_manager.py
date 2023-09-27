@@ -9,8 +9,6 @@ from nicegui import ui
 # project libraries
 import obj.user_data as ud
 import src.global_variables as global_variables
-import src.pathManager as pathManager
-import src.log_manager as log_manager
 
 def read_user_data():
 
