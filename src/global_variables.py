@@ -59,7 +59,7 @@ ui_M3U_preview_table: ui.table
 m3u_tracing_list = []
 
 # regex string to find if a file refer to a multidisc format
-regex_multi_disc = r"( *\(Disc .+?\)| *\(Disk .+?\)| *\(Bonus Disc\))"
+regex_multi_disc = r"( *\(Disc .+?\)| *\(Disk .+?\)| *\(Bonus Disc\)| *\(Side.+?\))"
 # regex string to find part of filename to remove from the destination folder name
 regex_string_to_remove_for_destination_folder = r" *\(Track .+?\)"
 
