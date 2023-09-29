@@ -70,7 +70,7 @@ def apply_bindings():
 
 def set_labels():
     global_variables.logger.debug(inspect.currentframe().f_code.co_name)
-    global_variables.ui_M3U_extensions_label.text = 'Extensions enabled for M3U playlists: '
+    global_variables.ui_M3U_extensions_label.text = 'Extensions enabled: '
     i = 0
     for item in global_variables.configuration.extensions_for_M3U:
         if i > 0:

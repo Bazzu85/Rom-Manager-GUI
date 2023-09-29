@@ -80,7 +80,7 @@ def apply_bindings():
 
 def set_labels():
     global_variables.logger.debug(inspect.currentframe().f_code.co_name)
-    global_variables.ui_move_roms_extensions_label.text = 'Extensions enabled for file move: '
+    global_variables.ui_move_roms_extensions_label.text = 'Extensions enabled: '
     i = 0
     for item in global_variables.configuration.extensions_for_file_move:
         if i > 0:
