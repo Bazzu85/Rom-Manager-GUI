@@ -7,3 +7,4 @@ dist
 *.spec
 test
 *-workspace
+Make Rom Manager GUI release zip.ps1
