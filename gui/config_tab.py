@@ -21,7 +21,10 @@ def createConfigTab():
         with ui.row().classes('items-center'):
             global_variables.ui_config_port_number = ui.number(label='Port number', min=0, max= 65353, format='%.0f')
         with ui.row().classes('items-center'):
-            global_variables.ui_config_write_user_data_every = ui.number(label='Write user_data every x seconds (if something changes) (app reboot required)', min=0, max= 3600, format='%.0f')
+            message = 'Write user_data every x seconds (if something changes) (app reboot required)'
+            global_variables.ui_config_write_user_data_every = ui.number(label=message, min=0, max= 3600, format='%.0f').classes('w-96')
+            with global_variables.ui_config_write_user_data_every:
+                ui.tooltip(message).classes('bg-green')
         with ui.row().classes('w-96 items-center'):
             global_variables.ui_config_log_file_input = ui.input(label='Log file location', 
                                                         validation={'Insert something': lambda value: value != ''}).classes('w-full')
