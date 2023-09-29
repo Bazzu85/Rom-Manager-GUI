@@ -27,7 +27,7 @@ def edit_extensions_for_M3U_dialog():
     ]
 
     # 'w-full items-center'
-    with ui.dialog() as global_variables.ui_config_extensions_for_M3U_dialog, ui.card().classes('w-full h-full'):
+    with ui.dialog() as global_variables.ui_extensions_for_M3U_dialog, ui.card().classes('w-full h-full'):
         with ui.scroll_area().classes('w-full h-full'):
             with ui.card().classes('no-shadow'):
                 with ui.row().classes('items-center'):
@@ -113,5 +113,5 @@ def delete_extensions():
             
 def close_dialog(result):
     global_variables.logger.debug(inspect.currentframe().f_code.co_name)
-    global_variables.ui_config_extensions_for_M3U_dialog.submit(result)
+    global_variables.ui_extensions_for_M3U_dialog.submit(result)
     

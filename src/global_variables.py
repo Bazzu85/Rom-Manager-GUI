@@ -31,14 +31,14 @@ ui_config_run_in_native_mode_switch: ui.switch
 ui_config_log_file_input: ui.input
 ui_config_port_number: ui.number
 ui_config_write_user_data_every: ui.number
-ui_config_extensions_for_file_move_label: ui.label
-ui_config_extensions_for_file_move_dialog: ui.dialog
-ui_config_extensions_for_M3U_label: ui.label
-ui_config_extensions_for_M3U_dialog: ui.dialog
+
+ui_extensions_for_file_move_dialog: ui.dialog
+ui_extensions_for_M3U_dialog: ui.dialog
 
 ui_move_roms_choice_radio: ui.radio
 MOVE_ROMS_TO_SUBFOLDER = 1
 MOVE_ROMS_TO_FOLDER = 2
+ui_move_roms_extensions_label: ui.label
 ui_move_roms_source_path_input: ui.input
 ui_move_roms_use_same_folder_for_multidisc_switch: ui.switch
 ui_move_roms_use_different_folder_switch: ui.switch
@@ -49,6 +49,7 @@ ui_move_roms_delete_empty_folders_switch: ui.switch
 ui_move_roms_preview_table: ui.table
 move_roms_tracing_list = []
 
+ui_M3U_extensions_label: ui.label
 ui_M3U_source_path_input: ui.input
 ui_M3U_use_centralized_folder_switch: ui.switch
 ui_M3U_destination_path_input: ui.input

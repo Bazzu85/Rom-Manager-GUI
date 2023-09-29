@@ -8,6 +8,7 @@ from pathlib import Path
 import src.global_variables as global_variables
 import src.configuration_manager as configuration_manager
 from obj.m3u_tracing import M3U_tracing
+import gui.extensions_for_M3U_dialogs as extensions_for_M3U_dialogs
 import workers.m3u_files_worker as m3u_files_worker
 
 show_preview = False
@@ -18,6 +19,9 @@ def create_M3U_files_section():
     global enable_ui_elements
     global_variables.logger.debug(inspect.currentframe().f_code.co_name)
     with ui.card().classes('w-full items-center no-shadow'):
+        with ui.row().classes('w-full items-center'):
+            global_variables.ui_M3U_extensions_label = ui.label()
+            ui.button('Edit', on_click=edit_extensions_for_M3U)
         with ui.row().classes('w-full items-center'):
             global_variables.ui_M3U_source_path_input = ui.input(label='Rom file location', 
                                                         validation={
@@ -42,6 +46,7 @@ def create_M3U_files_section():
             
     
     apply_bindings()
+    set_labels()
 
 def apply_bindings():
     global_variables.logger.debug(inspect.currentframe().f_code.co_name)
@@ -63,6 +68,18 @@ def apply_bindings():
     global_variables.ui_M3U_generate_button.bind_enabled_from(globals(), 'enable_ui_elements')
     global_variables.ui_M3U_generate_button.bind_visibility_from(globals(), 'show_preview')
 
+def set_labels():
+    global_variables.logger.debug(inspect.currentframe().f_code.co_name)
+    global_variables.ui_M3U_extensions_label.text = 'Extensions enabled for M3U playlists: '
+    i = 0
+    for item in global_variables.configuration.extensions_for_M3U:
+        if i > 0:
+            global_variables.ui_M3U_extensions_label.text += ', '
+        global_variables.ui_M3U_extensions_label.text += item
+        i += 1
+        
+    global_variables.logger.debug('Calculated ui_move_roms_extensions_label: ' + global_variables.ui_move_roms_extensions_label.text)
+    
 def add_table_to_ui():
     columns = [
                 {'name': 'm3u_folder', 'label': 'Folder', 'field': 'm3u_folder', 'required': True, 'align': 'left', 'sortable': True},
@@ -202,4 +219,13 @@ async def generate_M3U():
     enable_ui_elements = True
     
     spinner.delete()
+
+async def edit_extensions_for_M3U():
+     global_variables.logger.debug(inspect.currentframe().f_code.co_name)
+     extensions_for_M3U_dialogs.edit_extensions_for_M3U_dialog()
+     result = await global_variables.ui_extensions_for_M3U_dialog
+     if result:
+        # centralized function to apply bindings
+        apply_bindings()
+        set_labels()
 

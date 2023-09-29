@@ -8,6 +8,7 @@ from pathlib import Path
 import src.global_variables as global_variables
 import src.configuration_manager as configuration_manager
 from obj.move_tracing import Move_Tracing
+import gui.extensions_for_file_move_dialogs as extensions_for_file_move_dialogs
 import workers.move_roms_worker as move_roms_worker
 
 show_move_roms_to_folder_elements = False
@@ -22,6 +23,9 @@ def create_move_roms_section():
     global enable_ui_elements
     global_variables.logger.debug(inspect.currentframe().f_code.co_name)
     with ui.card().classes('w-full items-center no-shadow'):
+        with ui.row().classes('w-full items-center'):
+            global_variables.ui_move_roms_extensions_label = ui.label()
+            ui.button('Edit', on_click=edit_extensions_for_file_move)
         with ui.row().classes('w-full items-center'):
             global_variables.ui_move_roms_choice_radio = ui.radio({global_variables.MOVE_ROMS_TO_SUBFOLDER: 'Move roms to subfolders based on rom name', global_variables.MOVE_ROMS_TO_FOLDER: 'Move roms to folder'}, on_change=check_move_roms_choice).props('inline')
         with ui.row().classes('w-full items-center'):
@@ -45,6 +49,7 @@ def create_move_roms_section():
             
     
     apply_bindings()
+    set_labels()
 
 def apply_bindings():
     global_variables.logger.debug(inspect.currentframe().f_code.co_name)
@@ -73,6 +78,18 @@ def apply_bindings():
     global_variables.ui_move_roms_delete_empty_folders_switch.bind_enabled_from(globals(), 'enable_ui_elements')
     global_variables.ui_move_roms_delete_empty_folders_switch.bind_visibility_from(globals(), 'show_preview')
 
+def set_labels():
+    global_variables.logger.debug(inspect.currentframe().f_code.co_name)
+    global_variables.ui_move_roms_extensions_label.text = 'Extensions enabled for file move: '
+    i = 0
+    for item in global_variables.configuration.extensions_for_file_move:
+        if i > 0:
+            global_variables.ui_move_roms_extensions_label.text += ', '
+        global_variables.ui_move_roms_extensions_label.text += item
+        i += 1
+        
+    global_variables.logger.debug('Calculated ui_move_roms_extensions_label: ' + global_variables.ui_move_roms_extensions_label.text)
+       
 def check_move_roms_choice():
     global show_move_roms_to_subfolder_elements
     global show_move_roms_to_folder_elements
@@ -132,7 +149,7 @@ async def generate_preview():
     await asyncio.to_thread(move_roms_worker.generate_preview)
 
     if len(global_variables.move_roms_tracing_list) == 0:
-        message = 'No moves to do'
+        message = 'No moves to do. Maybe you have not configured some extensions?'
         ui.notify(message)
         global_variables.logger.info(message)
     else:
@@ -192,4 +209,14 @@ async def run():
     enable_ui_elements = True
     
     spinner.delete()
+    
+async def edit_extensions_for_file_move():
+     global_variables.logger.debug(inspect.currentframe().f_code.co_name)
+     extensions_for_file_move_dialogs.edit_extensions_for_file_move_dialog()
+     result = await global_variables.ui_extensions_for_file_move_dialog
+     if result:
+        # centralized function to apply bindings
+        apply_bindings()
+        set_labels()
+
 
