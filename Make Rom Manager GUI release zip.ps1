@@ -2,6 +2,7 @@
 $compress = @{
     LiteralPath= 
     "$PSScriptRoot\Rom Manager GUI.py", 
+    "$PSScriptRoot\icon.png",
     "$PSScriptRoot\Generate requirements.bat", 
     "$PSScriptRoot\Install requirements.bat", 
     "$PSScriptRoot\gui", 
